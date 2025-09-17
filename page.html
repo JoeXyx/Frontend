@@ -1,0 +1,152 @@
+<html>
+    <body>
+    <h1>方向控制界面</h1>
+    
+    <div class="instructions">
+        <p>点击方向按钮或使用键盘方向键进行控制</p>
+        <p>当前按键状态：<span id="keyStatus">未检测到按键</span></p>
+    </div>
+    
+    <div class="control-container">
+        <div class="direction-row">
+            <button id="up" class="direction-btn">↑<br>Up</button>
+        </div>
+        <div class="direction-row">
+            <button id="left" class="direction-btn">←<br>Left</button>
+            <button id="back" class="direction-btn">↓<br>Back</button>
+            <button id="right" class="direction-btn">→<br>Right</button>
+        </div>
+    </div>
+    
+    <button id="keyboard" class="keyboard-btn">键盘控制已启用</button>
+    
+    <div class="status">
+        <p>最后按下的键: <span id="lastKey">无</span></p>
+        <p>键码: <span id="keyCode">-</span></p>
+    </div>
+    
+    <div class="footer">
+        <p>使用键盘方向键或点击按钮进行交互</p>
+    </div>
+
+    <script>
+        // 获取元素
+        var up = document.getElementById("up");
+        var back = document.getElementById("back");
+        var left = document.getElementById("left");
+        var right = document.getElementById("right");
+        var keyboard = document.getElementById("keyboard");
+        var keyStatus = document.getElementById("keyStatus");
+        var lastKey = document.getElementById("lastKey");
+        var keyCode = document.getElementById("keyCode");
+        
+        // 方向按钮点击事件
+        up.addEventListener("click", function() {
+            showAlert("向上");
+        });
+        
+        back.addEventListener("click", function() {
+            showAlert("向后");
+        });
+        
+        left.addEventListener("click", function() {
+            showAlert("向左");
+        });
+        
+        right.addEventListener("click", function() {
+            showAlert("向右");
+        });
+        
+        // 键盘控制事件
+        document.addEventListener("keydown", function(event) {
+            // 更新按键状态
+            keyStatus.textContent = "按键已按下";
+            keyStatus.style.color = "#7fff00";
+            
+            // 移除之前的高亮
+            document.querySelectorAll('.key-pressed').forEach(function(el) {
+                el.classList.remove('key-pressed');
+            });
+            
+            // 根据按键代码执行操作
+            if (event.keyCode === 37) {
+                showAlert("向左");
+                left.classList.add('key-pressed');
+                updateKeyInfo("左箭头", 37);
+            } else if (event.keyCode === 39) {
+                showAlert("向右");
+                right.classList.add('key-pressed');
+                updateKeyInfo("右箭头", 39);
+            } else if (event.keyCode === 38) {
+                showAlert("向上");
+                up.classList.add('key-pressed');
+                updateKeyInfo("上箭头", 38);
+            } else if (event.keyCode === 40) {
+                showAlert("向下");
+                back.classList.add('key-pressed');
+                updateKeyInfo("下箭头", 40);
+            } else {
+                updateKeyInfo(event.key, event.keyCode);
+            }
+        });
+        
+        document.addEventListener("keyup", function() {
+            keyStatus.textContent = "按键已释放";
+            keyStatus.style.color = "#ff7f50";
+            
+            // 移除高亮效果
+            document.querySelectorAll('.key-pressed').forEach(function(el) {
+                el.classList.remove('key-pressed');
+            });
+        });
+        
+        // 显示提示信息
+        function showAlert(direction) {
+            // 使用更现代的提示方式
+            lastKey.textContent = direction;
+            
+            // 创建浮动提示
+            const tip = document.createElement('div');
+            tip.textContent = `正在向 ${direction} 移动`;
+            tip.style.position = 'fixed';
+            tip.style.top = '50%';
+            tip.style.left = '50%';
+            tip.style.transform = 'translate(-50%, -50%)';
+            tip.style.padding = '15px 30px';
+            tip.style.background = 'rgba(0, 0, 0, 0.7)';
+            tip.style.color = 'white';
+            tip.style.borderRadius = '10px';
+            tip.style.zIndex = '1000';
+            tip.style.fontSize = '1.5rem';
+            tip.style.opacity = '0';
+            tip.style.transition = 'opacity 0.3s';
+            
+            document.body.appendChild(tip);
+            
+            // 显示提示
+            setTimeout(() => {
+                tip.style.opacity = '1';
+            }, 10);
+            
+            // 隐藏提示
+            setTimeout(() => {
+                tip.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(tip);
+                }, 300);
+            }, 1000);
+        }
+        
+        // 更新按键信息
+        function updateKeyInfo(key, code) {
+            lastKey.textContent = key;
+            keyCode.textContent = code;
+        }
+        
+        // 初始化显示
+        keyboard.addEventListener("click", function() {
+            showAlert("键盘控制已启用");
+        });
+    </script>
+</body>
+</html>

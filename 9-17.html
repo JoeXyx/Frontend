@@ -1,0 +1,22 @@
+<html>
+    <body>
+        <button id="firstButton">第一个按钮</button>
+        <form  action="https://www.baidu.com" method="get">
+            <input type="text" name="wd" placeholder="请输入搜索内容">
+        
+        <button id="submit" type="submit">提交</button>
+        </form>
+        <button id="secondButton">第二个按钮</button>
+       
+    </body>
+    <script>
+        document.getElementById("firstButton").addEventListener("click",function(){
+            alert(window.location.href)
+            window.status=window.location.href
+        })
+        document.getElementById("secondButton").addEventListener("click",function(){
+            document.body.style.backgroundColor="rgb("+Math.floor(Math.random()*256)+","+Math.floor(Math.random()*256)+","+Math.floor(Math.random()*256)+")"
+            document.title="变色了"
+        })
+    </script>
+</html>
